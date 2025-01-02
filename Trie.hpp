@@ -18,13 +18,14 @@ public:
 
     void load(const std::string& filename);
     bool insert(const std::string& classi);
-
+    std::string classify(std::string input);
     bool erase(const std::string& classi);
     void print();
     void print_re(Node* node, const std::string& path, std::vector<std::string>& res);
     bool empty();
     void clear();
     void clear_re(Node* node);
+    int getSize() {return size;}
 };
 
 #endif

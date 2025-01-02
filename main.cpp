@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include "Trie.hpp"
+#include "illegal.cpp"
 
 int main() {
     int size, type;
@@ -9,47 +10,57 @@ int main() {
     Trie trie;
 
     while (std::cin >> cmd) {
-        if (cmd == "LOAD") {
-            std::string filename;
-            std::cin >> filename;
-            trie.load(filename);
-            std::cout << "success\n";
-        } else if (cmd == "INSERT") {
-            std::string classi;
-            std::cin >> classi;
-            bool flag = trie.insert(classi);
-            if (flag) {
+        try {
+            if (cmd == "LOAD") {
+                std::string filename;
+                std::cin >> filename;
+                trie.load(filename);
                 std::cout << "success\n";
-            } else {
-                std::cout << "failure\n";
-            }
-        } else if (cmd == "CLASSIFY") {
-            
-        } else if (cmd == "ERASE") {
-            std::string classi;
-            std::cin >> classi;
-            bool flag = trie.erase(classi);
-            if (flag) {
+            } else if (cmd == "INSERT") {
+                std::string classi;
+                std::cin.ignore();
+                std::getline(std::cin, classi);
+                bool flag = trie.insert(classi);
+                if (flag) {
+                    std::cout << "success\n";
+                } else {
+                    std::cout << "failure\n";
+                }
+            } else if (cmd == "CLASSIFY") {
+                std::string input;
+                std::cin.ignore();
+                std::getline(std::cin, input);
+                std::cout << trie.classify(input) << "\n";
+            } else if (cmd == "ERASE") {
+                std::string classi;
+                std::cin.ignore();
+                std::getline(std::cin, classi);
+                bool flag = trie.erase(classi);
+                if (flag) {
+                    std::cout << "success\n";
+                } else {
+                    std::cout << "failure\n";
+                }
+            } else if (cmd == "PRINT")  {
+                trie.print();
+            } else if (cmd == "EMPTY") {     
+                bool flag = trie.empty();
+                if (flag) {
+                    std::cout << "empty 1\n";
+                } else {
+                    std::cout << "empty 0\n";
+                }
+            } else if (cmd == "CLEAR") {       
+                trie.clear();
                 std::cout << "success\n";
-            } else {
-                std::cout << "failure\n";
-            }
-        } else if (cmd == "PRINT")  {
-            trie.print();
-        } else if (cmd == "EMPTY") {     
-            bool flag = trie.empty();
-            if (flag) {
-                std::cout << "empty 1\n";
-            } else {
-                std::cout << "empty 0\n";
-            }
-        } else if (cmd == "CLEAR") {       
-            trie.clear();
-            std::cout << "success\n";
-        } else if (cmd == "SIZE") {       
-            
-        } 
+            } else if (cmd == "SIZE") { 
+                std::cout << "number of classifications is " << trie.getSize() << "\n";
+            } 
+        } catch (const illegal_exc& e) {
+            std::cout << e.what() << std::endl;
+        }
     }
+        
 }
 
 
